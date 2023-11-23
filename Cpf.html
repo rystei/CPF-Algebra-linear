@@ -2,44 +2,61 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
-  <title>Calculadora de CPF com Álgebra Linear</title>
-  <link rel="stylesheet" href="Cpf.css"> 
+  <title>Verificação de CPF</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 50px;
+    }
+    input[type="text"] {
+      padding: 8px;
+      margin-bottom: 10px;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
 
-<div class="container">
-  <h2>Calculadora de CPF com Álgebra Linear</h2>
+<h2>Verificação de CPF</h2>
+<p>Insira os nove primeiros dígitos do CPF para calcular os dígitos verificadores:</p>
 
-  <p>Insira os nove primeiros dígitos do CPF, para calcular os dígitos verificadores:</p>
+<input type="text" id="cpfInput" placeholder="Insira os 9 dígitos do CPF">
+<button onclick="calcularDigitosVerificadores()">Calcular Dígitos Verificadores</button>
 
-  <input type="text" id="cpfInput" placeholder="Insira os 9 dígitos do CPF">
-  <button onclick="calcularCPF()">Calcular</button>
-
-  <p id="resultado"></p>
-</div>
+<p id="resultado"></p>
 
 <script>
-  function calcularCPF() {
-    let cpfBase = document.getElementById('cpfInput').value.replace(/\D/g, ''); 
+function calcularDigitosVerificadores() {
+    let cpfBase = document.getElementById('cpfInput').value.replace(/\D/g, ''); // Remove caracteres não numéricos
     if (cpfBase.length !== 9) {
-      document.getElementById('resultado').innerText = 'Por favor, insira 9 dígitos numéricos válidos.';
-      return;
+        document.getElementById('resultado').innerText = 'Por favor, insira 9 dígitos numéricos válidos.';
+        return;
     }
 
-    let cpfNumeros = cpfBase.split('').map(digito => parseInt(digito)); 
-    const matrizCoeficientes = [
-      [10, 9, 8, 7, 6, 5, 4, 3, 2],
-      [11, 10, 9, 8, 7, 6, 5, 4, 3]
-    ];
+    let u = cpfBase.split('').map(digito => parseInt(digito)); // Vetor u
+    let v = [1, 2, 3, 4, 5, 6, 7, 8, 9]; // Vetor v para o primeiro dígito verificador
 
-    let resultadoMultiplicacao = matrizCoeficientes.map(coefs =>
-      coefs.reduce((acc, coef, idx) => acc + coef * cpfNumeros[idx], 0)
-    );
+    // Cálculo do primeiro dígito verificador
+    let d1 = u.reduce((acc, valor, index) => acc + valor * v[index], 0) % 11;
 
-    let digitosVerificadores = resultadoMultiplicacao.map(soma => (soma * 10) % 11);
-    digitosVerificadores = digitosVerificadores.map(digito => (digito === 10 || digito === 11) ? 0 : digito);
+    // Adiciona o primeiro dígito verificador ao vetor u
+    u.push(d1);
 
-    let cpfCompleto = cpfBase + digitosVerificadores.join('');
-    document.getElementById('resultado').innerText = `O CPF completo é: ${cpfCompleto}`;
-  }
+    let v2 = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]; // Vetor v para o segundo dígito verificador
+
+    // Cálculo do segundo dígito verificador
+    let d2 = u.reduce((acc, valor, index) => acc + valor * v2[index], 0) % 11;
+
+    // Exibe o resultado  
+    let cpfCompleto = cpfBase + d1.toString() + d2.toString();
+    document.getElementById('resultado').innerText = `Os dígitos verificadores do CPF são: ${d1} e ${d2}. O CPF completo é: ${cpfCompleto}`;
+}
 </script>
 
 </body>
