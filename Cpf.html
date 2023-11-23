@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Calculadora de CPF com Álgebra Linear</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 50px;
+    }
+    input[type="text"] {
+      padding: 8px;
+      margin-bottom: 10px;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<h2>Calculadora de CPF com Álgebra Linear</h2>
+<p>Insira os nove primeiros dígitos do CPF para calcular os dígitos verificadores:</p>
+
+<input type="text" id="cpfInput" placeholder="Insira os 9 dígitos do CPF">
+<button onclick="calcularCPF()">Calcular</button>
+
+<p id="resultado"></p>
+
+<script>
+function calcularCPF() {
+    let cpfBase = document.getElementById('cpfInput').value.replace(/\D/g, ''); // Remove caracteres não numéricos
+    if (cpfBase.length !== 9) {
+        document.getElementById('resultado').innerText = 'Por favor, insira 9 dígitos numéricos válidos.';
+        return;
+    }
+
+    let cpfNumeros = cpfBase.split('').map(digito => parseInt(digito)); // Converte a string em uma matriz de números
+
+    // Matriz de coeficientes para o cálculo dos dígitos verificadores
+    const matrizCoeficientes = [
+        [10, 9, 8, 7, 6, 5, 4, 3, 2],
+        [11, 10, 9, 8, 7, 6, 5, 4, 3]
+    ];
+
+    let resultadoMultiplicacao = matrizCoeficientes.map(coefs =>
+        coefs.reduce((acc, coef, idx) => acc + coef * cpfNumeros[idx], 0)
+    );
+
+    // Obtendo os dígitos verificadores a partir do resultado da multiplicação
+    let digitosVerificadores = resultadoMultiplicacao.map(soma => (soma * 10) % 11);
+    digitosVerificadores = digitosVerificadores.map(digito => (digito === 10 || digito === 11) ? 0 : digito);
+
+    let cpfCompleto = cpfBase + digitosVerificadores.join('');
+    document.getElementById('resultado').innerText = `O CPF completo é: ${cpfCompleto}`;
+}
+</script>
+
+</body>
+</html>
