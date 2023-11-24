@@ -3,36 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <title>Verificação de CPF</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 50px;
-    }
-    input[type="text"] {
-      padding: 8px;
-      margin-bottom: 10px;
-    }
-    button {
-      padding: 10px 20px;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
-  </style>
-</head>
-<body>
+  <link rel="stylesheet" href="Cpf.css">
 
-<h2>Verificação de CPF</h2>
-<p>Insira os nove primeiros dígitos do CPF para calcular os dígitos verificadores:</p>
-
-<input type="text" id="cpfInput" placeholder="Insira os 9 dígitos do CPF">
-<button onclick="calcularDigitosVerificadores()">Calcular Dígitos Verificadores</button>
-
-<p id="resultado"></p>
+  <div class="container">
+    <h2>Calculadora de CPF com Álgebra Linear</h2>
+  
+    <p>Insira os nove primeiros dígitos do CPF, para calcular os dígitos verificadores:</p>
+  
+    <input type="text" id="cpfInput" placeholder="Insira os 9 dígitos do CPF">
+    <button onclick="calcularCPF()">Calcular</button>
+  
+    <p id="resultado"></p>
+  </div>
 
 <script>
-function calcularDigitosVerificadores() {
+function calcularCPF() {
     let cpfBase = document.getElementById('cpfInput').value.replace(/\D/g, ''); // Remove caracteres não numéricos
     if (cpfBase.length !== 9) {
         document.getElementById('resultado').innerText = 'Por favor, insira 9 dígitos numéricos válidos.';
