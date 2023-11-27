@@ -5,23 +5,6 @@
   <title>Verificação de CPF</title>
   <head>
     <link rel="stylesheet" type="text/css" href="Cpf.css">
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 50px;
-    }
-    input[type="text"] {
-      padding: 8px;
-      margin-bottom: 10px;
-    }
-    button {
-      padding: 10px 20px;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
-  </style>
 </head>
 <body>
 
@@ -47,19 +30,17 @@ function calcularDigitosVerificadores() {
     // Cálculo do primeiro dígito verificador
     let d1 = u.reduce((acc, valor, index) => acc + valor * v[index], 0) % 11;
 
-    // Adiciona o primeiro dígito verificador ao vetor u
+    // Adiciona o primeiro dígito verificador ao vetor 
     u.push(d1);
 
     let v2 = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]; // Vetor v para o segundo dígito verificador
 
     // Cálculo do segundo dígito verificador
     let d2 = u.reduce((acc, valor, index) => acc + valor * v2[index], 0) % 11;
-
-    // Exibe o resultado  
+  
     let cpfCompleto = cpfBase + d1.toString() + d2.toString();
     document.getElementById('resultado').innerText = `Os dígitos verificadores do CPF são: ${d1} e ${d2}. O CPF completo é: ${cpfCompleto}`;
 }
 </script>
-
 </body>
 </html>
